@@ -1,5 +1,10 @@
+export type BALLTYPE = {
+	name: string;
+	level: number;
+};
+
 export default class Contant {
-	public static BAlls = [
+	public static BAlls: BALLTYPE[] = [
 		{
 			name: "小米1",
 			level: 1,

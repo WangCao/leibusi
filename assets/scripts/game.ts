@@ -2,6 +2,9 @@ const { ccclass, property } = cc._decorator;
 import PoolManager from "./common/poolManager";
 import ball from "./ball";
 import Contant from "./contant";
+import pubSub from "./common/pubsub";
+import AudioManager from "./common/audioManager";
+import Configurable from "./common/configuration";
 
 @ccclass
 export default class NewClass extends cc.Component {
@@ -11,14 +14,22 @@ export default class NewClass extends cc.Component {
 	@property(cc.Prefab)
 	box: cc.Prefab = null;
 
-	private _nodepool: cc.NodePool = null;
+	@property(cc.Node)
+	musicNode: cc.Node = null;
+
+	private _isMusicPlay: 0 | 1 = 1;
+	private _musicTween: cc.Tween = null;
 
 	onLoad() {
+		this.initGame();
 		const PhysicsManager = cc.director.getPhysicsManager();
 		PhysicsManager.enabled = true;
 
 		const CollisionManager = cc.director.getCollisionManager();
 		CollisionManager.enabled = true;
+
+		pubSub.subscribe("generatorBigerBall", this._generatorBiggerBox, this);
+		this.musicNode.on(cc.Node.EventType.TOUCH_START, this._switchMusic, this);
 
 		this.boxsPageNode.on(
 			cc.Node.EventType.TOUCH_START,
@@ -26,8 +37,54 @@ export default class NewClass extends cc.Component {
 			this
 		);
 	}
+
+	initGame() {
+		let ismusic = Configurable.getConfigData("isMusicPlay");
+		if (ismusic && ismusic == 0) {
+			this._isMusicPlay = 0;
+		}
+		this._initMusicInfo();
+	}
+
+	private _switchMusic() {
+		this._isMusicPlay = (1 - this._isMusicPlay) as 0 | 1;
+		Configurable.setConfigData("isMusicPlay", this._isMusicPlay);
+		this._initMusicInfo();
+	}
+
+	private _initMusicInfo() {
+		if (this._isMusicPlay == 1) {
+			AudioManager.playMusic("areyouok", true);
+			this._musicTween = cc
+				.tween(this.musicNode)
+				.to(3, { angle: 360 })
+				.repeatForever()
+				.start();
+		} else {
+			if (this._musicTween) {
+				this._musicTween.stop();
+			}
+		}
+	}
+
+	private _generatorBiggerBox(evt) {
+		console.log(evt);
+		let level = evt.level;
+		let pos = evt.pos;
+		let node = PoolManager.getNode(this.box, this.boxsPageNode);
+		let ball = node.getComponent("ball") as ball;
+		ball.init(Contant.BAlls[level - 1]);
+		// ball.setRigidBodyAwake(false);
+		node.setPosition(pos);
+		// node.setScale(0);
+		// cc.tween(node)
+		// 	.to(0.1, { scale: 1 })
+		// 	.call(() => {
+		// 		ball.setRigidBodyAwake(true);
+		// 	})
+		// 	.start();
+	}
 	private _downLoadBox(e: cc.Event.EventTouch) {
-		console.log(e.getLocation().x);
 		this._generatorBox(e.getLocation().x);
 	}
 

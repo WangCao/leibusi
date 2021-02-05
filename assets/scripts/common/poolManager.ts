@@ -23,7 +23,6 @@ class poolManager {
 			node = cc.instantiate(prefab);
 		}
 		node.parent = parent;
-		console.log("生成成功");
 		return node;
 	}
 

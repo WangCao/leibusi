@@ -45,5 +45,13 @@ export default class Contant {
 			name: "小米10",
 			level: 10,
 		},
+		{
+			name: "小米11",
+			level: 11,
+		},
+		{
+			name: "雷总的吻",
+			level: 12,
+		},
 	];
 }

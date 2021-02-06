@@ -48,6 +48,7 @@ export default class NewClass extends cc.Component {
 
 	private _switchMusic() {
 		this._isMusicPlay = (1 - this._isMusicPlay) as 0 | 1;
+		console.log(this._isMusicPlay)
 		Configurable.setConfigData("isMusicPlay", this._isMusicPlay);
 		this._initMusicInfo();
 	}
@@ -55,14 +56,22 @@ export default class NewClass extends cc.Component {
 	private _initMusicInfo() {
 		if (this._isMusicPlay == 1) {
 			AudioManager.playMusic("areyouok", true);
-			this._musicTween = cc
+			console.log("xixihah")
+			if (this._musicTween) {
+				this._musicTween.start();
+			}else {
+				this._musicTween = cc
 				.tween(this.musicNode)
-				.to(3, { angle: 360 })
-				.repeatForever()
+				.repeatForever(
+					cc.tween()
+						.by(3, { angle: 360 })
+				)
 				.start();
+			}	
 		} else {
 			if (this._musicTween) {
 				this._musicTween.stop();
+				
 			}
 		}
 	}

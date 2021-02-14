@@ -204,7 +204,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "c86f2bdc-450d-44bd-9961-a234ab04ab68"
     },
     "fileId": "f5muF7wWtI84LPdQOzRTHh",
     "sync": false
@@ -280,7 +280,7 @@
     "node": {
       "__id__": 6
     },
-    "_enabled": true,
+    "_enabled": false,
     "alignMode": 1,
     "_target": null,
     "_alignFlags": 45,
@@ -306,7 +306,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "c86f2bdc-450d-44bd-9961-a234ab04ab68"
     },
     "fileId": "20a4lCSmZEzo7fJXbzchpk",
     "sync": false
@@ -336,7 +336,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "c86f2bdc-450d-44bd-9961-a234ab04ab68"
     },
     "fileId": "",
     "sync": false

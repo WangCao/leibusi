@@ -30,7 +30,7 @@ export default class Contant {
 			level: 6,
 		},
 		{
-			name: "小米7",
+			name: "小米Mix",
 			level: 7,
 		},
 		{

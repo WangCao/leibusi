@@ -9,10 +9,14 @@ export default class ball extends cc.Component {
 	@property({ type: cc.Label })
 	title: cc.Label = null;
 
+	@property({ type: cc.Sprite })
+	phoneSprite: cc.Sprite = null;
+
 	canTrigger: boolean = true;
 	level: number = null;
 	rigidBodyCollider: cc.PhysicsCircleCollider = null; //碰撞器
 	rigidBody: cc.RigidBody = null; //刚体
+	sprite: cc.Sprite = null;
 
 	onLoad() {
 		this.rigidBodyCollider = this.node.getComponent(cc.PhysicsCircleCollider);
@@ -25,6 +29,15 @@ export default class ball extends cc.Component {
 		this.node.scale = 0.3 + 0.1 * opt.level;
 		this.rigidBodyCollider.radius = this.node.width / 2;
 		this.rigidBodyCollider.apply();
+
+		let url = `texture/phone/${this.level}`;
+		cc.resources.load(url, cc.SpriteFrame, (err, frame: cc.SpriteFrame) => {
+			if (err) {
+				cc.error(err);
+				return;
+			}
+			this.phoneSprite.spriteFrame = frame;
+		});
 	}
 
 	hideBall() {

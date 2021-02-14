@@ -11,15 +11,22 @@ export default class flyReward extends cc.Component {
 	imgGold: cc.SpriteFrame = null;
 
 	@property(cc.Node)
-	ndRewardParent: cc.Node = null;
-
-	@property(cc.Node)
 	BoomNode: cc.Node = null;
 
 	finishIdx: number = 0;
 	_callback: Function;
+	rewardCount: number = 0;
+	coinPos: cc.Vec3 = null;
 
-	start() {
+	// start() {
+	// 	this.BoomNode.getComponent(cc.Animation).play();
+	// 	this.createReward();
+	// }
+
+	init(score: number, pos: cc.Vec3) {
+		this.rewardCount = score;
+		this.coinPos = pos;
+		this.BoomNode.setPosition(pos);
 		this.BoomNode.getComponent(cc.Animation).play();
 		this.createReward();
 	}
@@ -37,13 +44,14 @@ export default class flyReward extends cc.Component {
 
 	createReward() {
 		let imgReward = this.imgGold;
+		let canvas = cc.find("Canvas/flyRewardNode");
 
 		let targetPos = this.getTargetPos();
-		for (let i = 0; i < MAX_REWARD_COUNT; i++) {
+		for (let i = 0; i < this.rewardCount; i++) {
 			let rewardNode = new cc.Node("flyRewardItem");
 			let flyItem = rewardNode.addComponent(flyRewardItem);
-			rewardNode.parent = this.ndRewardParent;
-			flyItem.show(imgReward, targetPos, (node: cc.Node) => {
+			rewardNode.parent = canvas;
+			flyItem.show(imgReward, this.coinPos, targetPos, (node: cc.Node) => {
 				this.onFlyOver(node);
 			});
 		}
@@ -55,7 +63,7 @@ export default class flyReward extends cc.Component {
 		// cc.gameSpace.audioManager.playSound('sell', false);
 		node.active = false;
 		this.finishIdx++;
-		if (this.finishIdx === MAX_REWARD_COUNT) {
+		if (this.finishIdx === this.rewardCount) {
 			if (this._callback) {
 				this._callback();
 			}

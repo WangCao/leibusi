@@ -12,6 +12,10 @@ class audioManager {
 			cc.audioEngine.play(clip, loop, 0.5);
 		});
 	}
+
+	stopAll() {
+		cc.audioEngine.stopAll();
+	}
 }
 
 export default new audioManager();

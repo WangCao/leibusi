@@ -8,9 +8,15 @@ export default class flyReward extends cc.Component {
 	posLast: cc.Vec3;
 	_callback: Function;
 
-	show(imgItem: cc.SpriteFrame, posLast: cc.Vec3, callback: Function) {
+	show(
+		imgItem: cc.SpriteFrame,
+		posNow: cc.Vec3,
+		posLast: cc.Vec3,
+		callback: Function
+	) {
 		this.posLast = posLast;
 		this._callback = callback;
+		this.node.setPosition(posNow);
 		let sprite = this.node.addComponent(cc.Sprite);
 		sprite.trim = false;
 		sprite.spriteFrame = imgItem;
@@ -19,11 +25,11 @@ export default class flyReward extends cc.Component {
 		this.targetRotation = new cc.Vec3(this.node.eulerAngles);
 
 		let randTargetPos = new cc.Vec3(
-			Math.floor(Math.random() * 300) - 150,
-			Math.floor(Math.random() * 300) - 150,
+			posNow.x + Math.floor(Math.random() * 300) - 150,
+			posNow.y + Math.floor(Math.random() * 300) - 150,
 			0
 		);
-		let costTime = cc.Vec3.distance(randTargetPos, new cc.Vec3(0, 0, 0)) / 400;
+		let costTime = cc.Vec3.distance(randTargetPos, posNow) / 400;
 
 		cc.tween(this.node)
 			.to(costTime, { position: randTargetPos }, { easing: "cubicInOut" })
